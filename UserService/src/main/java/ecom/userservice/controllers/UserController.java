@@ -1,5 +1,7 @@
 package ecom.userservice.controllers;
 
+import ecom.userservice.exceptions.RoleNotFoundException;
+import ecom.userservice.exceptions.UserNotFoundException;
 import ecom.userservice.models.Role;
 import ecom.userservice.dtos.RoleToUserForm;
 import ecom.userservice.models.User;
@@ -10,10 +12,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1")
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -25,8 +27,12 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<User> getUser(@PathVariable Long id) {
-        return null; //ResponseEntity.ok().body(userService.getUser(id));
+    public ResponseEntity<User> getUser(@PathVariable Long id) throws UserNotFoundException {
+        return ResponseEntity.ok().body(userService.getUser(id));
+    }
+
+    public ResponseEntity<List<User>> getUsers(@RequestBody List<Role> roles){
+        return  ResponseEntity.ok().body(userService.getUsers(roles));
     }
 
     @PostMapping("/user")
@@ -40,7 +46,7 @@ public class UserController {
     }
 
     @PostMapping("/role")
-    public ResponseEntity<?> addRoleToUser(@RequestBody RoleToUserForm form) {
+    public ResponseEntity<?> addRoleToUser(@RequestBody RoleToUserForm form) throws UserNotFoundException, RoleNotFoundException {
         userService.addRoleToUser(form.getUsername(), form.getRoleName());
         return ResponseEntity.ok().build();
     }
