@@ -1,5 +1,6 @@
 package ecom.userservice.controllers;
 
+import ecom.userservice.exceptions.InvalidTokenException;
 import ecom.userservice.exceptions.RoleNotFoundException;
 import ecom.userservice.exceptions.UserNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -17,5 +18,10 @@ public class UserControllerAdvice {
     @ExceptionHandler(RoleNotFoundException.class)
     public ResponseEntity<String> handleRoleNotFoundException(RoleNotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<String> handleInvalidTokenException(InvalidTokenException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 }
