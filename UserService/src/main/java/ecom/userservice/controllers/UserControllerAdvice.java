@@ -1,5 +1,6 @@
 package ecom.userservice.controllers;
 
+import ecom.userservice.exceptions.InvalidLoginCredential;
 import ecom.userservice.exceptions.InvalidTokenException;
 import ecom.userservice.exceptions.RoleNotFoundException;
 import ecom.userservice.exceptions.UserNotFoundException;
@@ -22,6 +23,11 @@ public class UserControllerAdvice {
 
     @ExceptionHandler(InvalidTokenException.class)
     public ResponseEntity<String> handleInvalidTokenException(InvalidTokenException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(InvalidLoginCredential.class)
+    public ResponseEntity<String> handleInvalidLoginCredential(InvalidLoginCredential ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 }

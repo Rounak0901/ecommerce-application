@@ -7,11 +7,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+@Entity(name = "users")
+public class User extends BaseModel {
     private String username;
     private String email;
     private String password;
